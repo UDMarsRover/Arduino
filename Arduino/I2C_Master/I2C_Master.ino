@@ -16,10 +16,12 @@ void loop() {
   sendData(2,0);
   Serial.println("Sent");
   Serial.println("Gettign Data");
-  getData(2);
-  Serial.println("Got");
-  delay(2000);
-  
+  String returnData = getData(2);
+  if (returnData.length()!=0){
+    Serial.println(returnData);
+    Serial.println("Got");
+  }
+  else{Serial.println("Data Return Error");}
 }
 
 void sendData(int slaveNumber, int command){
@@ -28,15 +30,19 @@ void sendData(int slaveNumber, int command){
   Wire.endTransmission();
 }
 
-void getData(int slaveNumber){
+String getData(int slaveNumber){
+  Serial.println("1");
   String dataIn = "";
-  char dataArray[120];
-  int i=0;
+  Serial.println("2");
   Wire.requestFrom(slaveNumber,26);
+  Serial.println("3");
   while(0 < Wire.available()){
+    Serial.println("4");
     char c = Wire.read();
-    Serial.print(c);
-    dataArray[i] = c;
-    i++;
+    Serial.println("5");
+    if (c != '?'){dataIn = dataIn+c;}
+    Serial.println("6");
   }
+  return dataIn;
+  Serial.println("7");
 }
