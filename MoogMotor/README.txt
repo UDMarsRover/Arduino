@@ -1,0 +1,1 @@
+The files in the Library folder need to be added to the ino sketch for the software to work properly. This is done by clicking "Sketch" -> "Include Libaray" -> "Add .ZIP Library" then adding each .zip file from the provided Libraries folder
