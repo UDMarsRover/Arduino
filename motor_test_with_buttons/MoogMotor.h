@@ -1,6 +1,7 @@
 /*
  * MoogMotor.h - Library for controlling Moog Smart Motors via HardwareSerial.
  * Created by Joe Ditz on Jan 27, 2021
+ * Edited by Greg Molskow on Mar 27, 2021
  */
 
  #ifndef MoogMotor_h

@@ -1,6 +1,7 @@
 /*
  * MoogMotor.cpp - Library for controlling Moog Smart Motors via HardwareSerial.
  * Created by Joe Ditz on Jan 27, 2021
+ * Edited by Greg Moldkoe Mar 27, 2021
  */
 
 #include "Arduino.h"
