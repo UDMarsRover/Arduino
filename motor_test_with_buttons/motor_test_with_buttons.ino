@@ -2,45 +2,74 @@
 #include "MoogMotor.h"
 
 
-#define led = 13;
+int input;
+float velocity = 1;
+float acceleration = 1;
+float positionM = 0;
+boolean goodl = false;
+boolean goodr = false;
 
-#define startB = 12;
-#define stopB = 11;
-#define haultB = 10;
-
-MoogMotor mot = MoogMotor(Serial);
+MoogMotor leftDrive = MoogMotor(&Serial2); //Comms for left drive
+MoogMotor rightDrive = MoogMotor(&Serial1); //Coms for right drive
 
 void setup() {
-  mot.initSerial();
-  delay(1000);
 
-  pinMode(led, OUTPUT);
+  Serial.begin(9600); //Start a serial to take in keyboard commands
 
-  pinMode(startB, INPUT_PULLUP);
-  pinMode(stopB, INPUT_PULLUP);
-  pinMode(haultB, INPUT_PULLUP);
 }
 
 void loop() {
-  st = digitalRead(startB);
-  sp = digitalRead(stopB);
-  ht = digitalRead(haultB);
 
-  if (ht == LOW)//if hault button, hault
-  {
-    mot.hault();
-    digitalWrite(led, LOW);
-  }
-  else if (sp == LOW)//if stop button, slow to stop
-  {
-    mot.slowToStop();
-    digitalWrite(led, LOW);
-  }
-  else if (st == LOW)//if start button, start (velocity mode, quarter speed)
-  {
-    mot.driveMotor(MoogMotor::VEL, .25);
-    digitalWrite(led, HIGH);
-  }
+  if(Serial.available()){
+    
+    input = Serial.read(); //Check for an input
+    
+    if(input == 'w'){
+      goodl = leftDrive.setVelocity(velocity, acceleration);
+      goodr = rightDrive.setVelocity(velocity, acceleration);
 
-  delay(250);
+      if(goodl && goodr){
+        Serial.println("Running Forward");
+        positionM = positionM + 0.1;
+        }
+      
+    }
+
+    else if (input == 's'){
+      goodl = leftDrive.setVelocity(-velocity,acceleration);
+      goodr = rightDrive.setVelocity(-velocity,acceleration);
+      if(goodl && goodr){Serial.println("Running Backwards");}
+    }
+
+    else if (input == 'd'){
+      goodl = leftDrive.setVelocity(-velocity,acceleration);
+      goodr = rightDrive.setVelocity(velocity,acceleration);
+      if(goodl && goodr){Serial.println("Running Backwards");}
+    }
+
+    else if (input == 'a'){
+      goodl = leftDrive.setVelocity(velocity,acceleration);
+      goodr = rightDrive.setVelocity(-velocity,acceleration);
+      if(goodl && goodr){Serial.println("Running Backwards");}
+    }
+
+    else if(input == 'e'){
+      leftDrive.stop();
+      rightDrive.stop();
+      Serial.println("Stopped");
+    }
+
+    else if (input == 'q'){
+      leftDrive.setUp();
+      rightDrive.setUp();
+      Serial.println("Startup...");
+    }
+
+    else if (input == 'p'){
+      leftDrive.off();
+      rightDrive.off();
+      Serial.println("Shutdown..");
+    }
+    
+  }
 }
