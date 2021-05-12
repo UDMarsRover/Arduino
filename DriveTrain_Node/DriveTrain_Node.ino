@@ -1,4 +1,4 @@
-#include <ros.h>
+q#include <ros.h>
 #include "HardwareSerial.h"
 #include "MoogMotor.h"
 #include <std_msgs/String.h>
@@ -12,7 +12,7 @@ boolean goodr = false;
 
 ros::NodeHandle motor_node;
 std_msgs::String command_out;
-ros::Publisher commandOuttake("motor_control_out", &command_out);
+ros::Publisher commandOuttake("motorsToDriver", &command_out);
 MoogMotor leftDrive = MoogMotor(&Serial2); //Comms for left drive
 MoogMotor rightDrive = MoogMotor(&Serial1); //Coms for right drive
 
@@ -96,7 +96,7 @@ void intake(std_msgs::String command_in){
 
 
 
-ros::Subscriber<std_msgs::String> commandIntake("motor_control_in", &intake);
+ros::Subscriber<std_msgs::String> commandIntake("driverToMotors", &intake);
 
 
 
